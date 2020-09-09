@@ -16,6 +16,12 @@ tusd_unix = list(range(1521849600,1599523200,86400)) #offset 1x86400
 tusd_mcap_pd = pd.DataFrame({'unix':tusd_unix,'tusd_mcap':tusd_mcap})
 tusd_mcap_pd.to_csv('tusd_mcap.csv',sep=',')
 
+susd = cg.get_coin_market_chart_range_by_id('nusd','usd',1534204800,1599523200) #susd data 14.8.2018 -8.9.2020
+susd_mcap = np.array(susd['market_caps'])[:,1]
+susd_unix = list(range(1534204800,1599523200,86400))
+susd_mcap_pd = pd.DataFrame({'unix':susd_unix,'susd_mcap':susd_mcap})
+susd_mcap_pd.to_csv('susd_mcap.csv',sep=',')
+
 pax = cg.get_coin_market_chart_range_by_id('paxos-standard','usd',1538006400,1599523200) #paxos-standard data 27.9.2018-8.9.2020
 pax_mcap = np.array(pax['market_caps'])[:,1]
 pax_unix = list(range(1537920000,1599523200,86400)) #offset 1x86400
@@ -34,42 +40,39 @@ dai_unix = list(range(1574294400,1599523200,86400)) #offset 1x86400
 dai_mcap_pd = pd.DataFrame({'unix':dai_unix,'dai_mcap':dai_mcap})
 dai_mcap_pd.to_csv('dai_mcap.csv',sep=',')
 
-#to add
-#busd data
-#husd data
-#sUSD data
-#mUSD data
-#usdk data
-#gusd data
-#sai data
-#eosdt data
+#to add - busd, husd, mUSD, USDK, gUSD, SAI, EOSDT
+
 def total(): #calculate sum of marketcaps
     total = []
     for i in range(0,len(tether_mcap)): #longest array
-        k = i - 1289 #differences in array lengths - usdc
-        j = i - 1697 #dai
+        j = i - 1697 #differences in array lengths (tether-X), sorted by newest - dai
+        k = i - 1289 #usdc
         l = i - 1276 #pax
+        p = i - 1233 #susd
         o = i - 1090 #tusd
         if i > 1696:
-            total.append(tether_mcap[i] + tusd_mcap[o] + pax_mcap[l] + usdc_mcap[k] + dai_mcap[j]) #newest sum incl. dai
+            total.append(tether_mcap[i] + tusd_mcap[o] + susd_mcap[p] + pax_mcap[l] + usdc_mcap[k] + dai_mcap[j]) #newest sum incl. dai
         elif i > 1288:
-            total.append(tether_mcap[i] + tusd_mcap[o] + pax_mcap[l] + usdc_mcap[k]) 
+            total.append(tether_mcap[i] + tusd_mcap[o] + susd_mcap[p] + pax_mcap[l] + usdc_mcap[k]) 
         elif i > 1275:
-            total.append(tether_mcap[i] + tusd_mcap[o] + pax_mcap[l])
+            total.append(tether_mcap[i] + tusd_mcap[o] + susd_mcap[p] + pax_mcap[l])
+        elif i > 1232:
+            total.append(tether_mcap[i] + tusd_mcap[o] + susd_mcap[p])
         elif i > 1089:
             total.append(tether_mcap[i] + tusd_mcap[o])
         else:
             total.append(tether_mcap[i]) #oldest sum
     return total #list output
+
 total_mcap = np.array(total())
 total_mcap_pd = pd.DataFrame({'unix':tether_unix,'total_mcap':total_mcap})
 total_mcap_pd.to_csv('total_mcap.csv',sep=',')
 
+#Tether dominance calculater - change to functional if mcap is greatest
 dominance = (tether_mcap/total_mcap)*100 
 dominance_pd = pd.DataFrame({'unix':tether_unix,'tether_dominance':dominance})
 dominance_pd.to_csv('tether_dominance.csv',sep=',')
 
-
-#add BTC protocol dominance vs. l2 lighting/liquid/renbtc/wbtc
-#add protocol dominance - ETH/omni/EOS etc.
+#add stable coin protocol dominance - ETH/omni/EOS etc.
 #add EUR/CHF/CAD
+#add BTC protocol dominance vs. layer2 lighting/liquid/renbtc/wbtc
