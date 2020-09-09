@@ -36,11 +36,12 @@ def total(): #function to calculate sum of marketcaps
             total.append(tether_mcap[i]) #oldest sum
     return total #list output
 total_mcap = np.array(total())
-#total_mcap.tofile('total_mcap.csv',sep=',')
-
-#format as 2 columns with UNIX timestamps
+total_mcap_pd = pd.DataFrame({'unix':tether_unix,'total_mcap':total_mcap})
+total_mcap_pd.to_csv('total_mcap.csv',sep=',')
 
 dominance = (tether_mcap/total_mcap)*100 
-#dominance.tofile('dominance.csv',sep=',')
+dominance_pd = pd.DataFrame({'unix':tether_unix,'tether_dominance':dominance})
+dominance_pd.to_csv('tether_dominance.csv',sep=',')
+
 
 
