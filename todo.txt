@@ -1,0 +1,9 @@
+- To Do -
+
+Updater 1/min
+
+Plotter
+
+Add EUR/CHF other stable coins
+
+Add Bitcoin - as BTC network dominance vs. liquid, lightning, renbtc, wbtc
