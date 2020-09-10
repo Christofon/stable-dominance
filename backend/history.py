@@ -5,10 +5,10 @@ from pycoingecko import CoinGeckoAPI
 cg = CoinGeckoAPI()
 
 tether = cg.get_coin_market_chart_range_by_id('tether','usd',1426377600,1599523200) #tether data 15.3.2015-8.9.2020
-tether_mcap = np.array(tether['market_caps'])[:,1]
-tether_unix = list(range(1427673600,1599523200,86400)) #offset 15x86400
-tether_mcap_pd = pd.DataFrame({'unix':tether_unix,'tether_mcap':tether_mcap})
-tether_mcap_pd.to_csv('tether_mcap.csv',sep=',',index=False)
+tether_mcap = np.array(tether['market_caps'])[:,1] #extract marketcap data
+tether_unix = list(range(1427673600,1599523200,86400)) #formatting unix, offset 15x86400
+tether_mcap_pd = pd.DataFrame({'unix':tether_unix,'tether_mcap':tether_mcap}) #repackage as pandas
+tether_mcap_pd.to_csv('tether_mcap.csv',sep=',',index=False) #save to csv
 
 tusd = cg.get_coin_market_chart_range_by_id('true-usd','usd',1521936000,1599523200) #tusd data 25.3.2018-8.9.2020
 tusd_mcap = np.array(tusd['market_caps'])[:,1]
