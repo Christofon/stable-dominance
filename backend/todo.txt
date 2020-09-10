@@ -1,0 +1,7 @@
+add EUR/CHF/CAD
+
+add stable coin protocol dominance - ETH/omni/EOS/SOLANA/TRX 
+
+add BTC protocol dominance vs. layer2 lighting/liquid/renbtc/wbtc
+
+add arbitrage alerts >1% & >2%
