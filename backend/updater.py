@@ -65,5 +65,19 @@ dai_mcap_pd.to_csv('dai_mcap.csv',sep=',',index=False,header=False,mode='a')
 print(len(dai_mcap_pd))
 
 #calculate new data total mcap - correct for different lengths of new data?
-#calculate new data dominance
-#append to existing .csv
+S = min([tether_mcap_pd, tusd_mcap_pd, susd_mcap_pd, pax_mcap_pd, usdc_mcap_pd, dai_mcap_pd], key=len) #determine shortest dataset
+
+def total(): #calculate sum of marketcaps - do this in single line?
+    total = []
+    for i in range(0,len(S)): 
+        total.append(tether_mcap[i] + tusd_mcap[i] + susd_mcap[i] + pax_mcap[i] + usdc_mcap[i] + dai_mcap[i]) 
+    return total #list output
+
+total_mcap = np.array(total())
+total_mcap_pd = pd.DataFrame({'unix':S['unix'],'total_mcap':total_mcap})
+total_mcap_pd.to_csv('total_mcap.csv',sep=',',index=False,header=False,mode='a')
+
+#calculate new tether dominance - change to functional if mcap is greatest
+dominance = (tether_mcap[0:len(S)]/total_mcap)*100 #corrected for length = len(S)
+dominance_pd = pd.DataFrame({'unix':tether_unix[0:len(S)],'tether_dominance':dominance})
+dominance_pd.to_csv('tether_dominance.csv',sep=',',index=False,header=False,mode='a')
