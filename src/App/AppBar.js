@@ -8,6 +8,7 @@ const Bar = styled.div`
 
 const Logo = styled.div`
     font-size: 1.5em;
+    text-align: center;
 `;
 
 export default function() {
