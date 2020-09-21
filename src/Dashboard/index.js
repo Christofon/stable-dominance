@@ -15,11 +15,11 @@ const ChartGrid = styled.div`
 export default function() {
     return (
         <Page name="dashboard">
-            <PriceGrid />
             <ChartGrid>
                 <CoinSpotlight />
                 <PriceChart />
             </ChartGrid>
+        <PriceGrid/>
         </Page>
     );
 }
