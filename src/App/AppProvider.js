@@ -2,6 +2,9 @@ import React from "react";
 import _ from 'lodash';
 import moment from 'moment';
 
+const CoinGecko = require('coingecko-api');
+const cg = new CoinGecko();
+
 const cc = require('cryptocompare');
 cc.setApiKey('2d4bc8914f719b5cd7e3969b416372090549ea712205ccb7cdeb20f200121075')
 
@@ -16,40 +19,22 @@ export class AppProvider extends React.Component {
         super(props);
         this.state = {
             page: "dashboard",
-            favorites: ['USDT', 'USDC', 'DAI', 'ETH', 'BTC'],
+            coins: ['tether', 'dai'],
             timeInterval: 'months',
             ...this.savedSettings(),
             setPage: this.setPage,
-            addCoin: this.addCoin,
-            removeCoin: this.removeCoin,
             isInFavorites: this.isInFavorites,
-            confirmFavorites: this.confirmFavorites,
             setFilteredCoins: this.setFilteredCoins,
             setCurrentFavorite: this.setCurrentFavorite,
             changeChartSelect: this.changeChartSelect,
-            coinList: {},
+            coinList: [],
         }
-    }
-
-    addCoin = key => {
-        let favorites = [...this.state.favorites];
-        if(favorites.length  < MAX_FAVORITES) {
-            favorites.push(key);
-            this.setState({favorites});
-        }
-    }
-
-    removeCoin = key => {
-        let favorites  = [...this.state.favorites];
-        this.setState({favorites: _.pull(favorites,  key)})
     }
 
     isInFavorites = key => _.includes(this.state.favorites, key)
 
     componentDidMount = () => {
-        this.confirmFavorites();
         this.fetchCoins();
-        this.fetchPrices();
         this.fetchHistorical();
     }
 
@@ -67,25 +52,20 @@ export class AppProvider extends React.Component {
         this.setState({historical});
     }
 
-    fetchCoins = async () => {
-        let coinList = (await cc.coinList()).Data;
-        this.setState({coinList});
+    fetchCoins =  async () =>  {
+        let coins = await this.coins();
+        this.setState({coinList: coins});
+        console.log(this.state.coinList);
     }
 
-    fetchPrices =  async  () =>  {
-        let prices = await  this.prices();
-        prices = prices.filter(price => Object.keys(price).length);
-        this.setState({prices});
-    }
-
-    prices = async () => {
+    coins = async () => {
         let returnData = [];
-        for (let i = 0; i < this.state.favorites.length; i++) {
+        for (let i = 0; i < this.state.coins.length; i++) {
             try {
-                let priceData = await cc.priceFull(this.state.favorites[i], 'USD');
-                returnData.push(priceData);
+                let coinData = await cg.coins.fetch(this.state.coins[i]);
+                returnData.push(coinData.data);
             } catch (e) {
-                console.warn('Fetch price error: ', e);
+                console.warn('Fetch coin error: ', e);
             }
         }
         return returnData;
@@ -104,24 +84,6 @@ export class AppProvider extends React.Component {
             )
         }
         return Promise.all(promises);
-    }
-
-    confirmFavorites = () => {
-        let currentFavorite = this.state.favorites[0];
-        this.setState({
-            firstVisit: false,
-            page: 'dashboard',
-            currentFavorite,
-            prices: null,
-            historical: null
-        }, () => {
-            this.fetchPrices();
-            this.fetchHistorical();
-        });
-        localStorage.setItem('stableDominance', JSON.stringify({
-            favorites: this.state.favorites,
-            currentFavorite
-        }));
     }
 
     setCurrentFavorite = (sym) => {
