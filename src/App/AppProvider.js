@@ -38,6 +38,9 @@ export class AppProvider extends React.Component {
         this.fetchHistorical();
     }
 
+    //TODO implement historical fetch
+    //TODO refractor and sort codebase (prettier in every file)
+
     fetchHistorical = async () => {
         let results = await this.historical();
         let historical = [
@@ -55,7 +58,6 @@ export class AppProvider extends React.Component {
     fetchCoins =  async () =>  {
         let coins = await this.coins();
         this.setState({coinList: coins});
-        console.log(this.state.coinList);
     }
 
     coins = async () => {

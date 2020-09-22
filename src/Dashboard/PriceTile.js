@@ -61,21 +61,20 @@ function PriceTile({ sym, data, currentFavorite, setCurrentFavorite }) {
             <CoinHeaderStyled>
                 <div> {sym} </div>
             </CoinHeaderStyled>
-            <TickerPrice>{numberFormat(data.MKTCAP, 2)}</TickerPrice>
+            <TickerPrice>{numberFormat(data.market_data.market_cap.usd, 2)}</TickerPrice>
         </PriceTileStyled>
     );
 }
 
-export default function({ price }) {
-    let sym = Object.keys(price)[0];
-    let data = price[sym]["USD"];
+export default function({ coin }) {
+    let sym = coin.name;
 
     return (
         <AppContext.Consumer>
         {({ currentFavorite, setCurrentFavorite }) =>
             <PriceTile
             sym={sym}
-            data={data}
+            data={coin}
             currentFavorite={currentFavorite === sym}
             setCurrentFavorite={() => setCurrentFavorite(sym)}
             >
