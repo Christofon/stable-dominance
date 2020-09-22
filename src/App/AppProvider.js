@@ -20,7 +20,7 @@ export class AppProvider extends React.Component {
         this.state = {
             page: "dashboard",
             coins: ['tether', 'dai'],
-            timeInterval: 'months',
+            timeInterval: '30',
             ...this.savedSettings(),
             setPage: this.setPage,
             isInFavorites: this.isInFavorites,
@@ -55,6 +55,18 @@ export class AppProvider extends React.Component {
         this.setState({historical});
     }
 
+    historical = () => {
+        let promises = [];
+        for (let units = TIME_UNITS; units > 0; units--) {
+            promises.push(
+                cg.coins.fetchMarketChart('tether', {days: 1}),
+                )
+        }
+        console.log(promises);
+        return Promise.all(promises);
+    }
+
+
     fetchCoins =  async () =>  {
         let coins = await this.coins();
         this.setState({coinList: coins});
@@ -71,21 +83,6 @@ export class AppProvider extends React.Component {
             }
         }
         return returnData;
-    }
-
-    historical = () => {
-        let promises = [];
-        for (let units = TIME_UNITS; units > 0; units--) {
-            promises.push(
-                cc.priceHistorical(this.state.currentFavorite,
-                ['USD'],
-                moment()
-                    .subtract({[this.state.timeInterval]: units})
-                    .toDate()
-                )
-            )
-        }
-        return Promise.all(promises);
     }
 
     setCurrentFavorite = (sym) => {
