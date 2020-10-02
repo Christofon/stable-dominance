@@ -5,10 +5,10 @@ import moment from "moment";
 const CoinGecko = require("coingecko-api");
 const cg = new CoinGecko();
 
-const cc = require("cryptocompare");
-cc.setApiKey(
-  "2d4bc8914f719b5cd7e3969b416372090549ea712205ccb7cdeb20f200121075"
-);
+//const cc = require("cryptocompare");
+//cc.setApiKey(
+//  "2d4bc8914f719b5cd7e3969b416372090549ea712205ccb7cdeb20f200121075"
+//);
 
 export const AppContext = React.createContext();
 
