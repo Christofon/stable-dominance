@@ -18,7 +18,6 @@ const Grid = styled.div`
 const Ticker = styled.div`
   font-size: 4em;
   text-align: center;
-
 `
 
 export default function () {

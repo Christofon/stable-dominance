@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { SelectableTile } from "../Shared/Tile";
-import { fontSize3, fontSizeBig, greenBoxShadow } from "../Shared/Styles";
+import { fontSize3, fontSizeBig, BoxShadow } from "../Shared/Styles";
 import { CoinHeaderStyled } from "./CoinHeaderGrid";
 import { AppContext } from "../App/AppProvider";
 
@@ -19,7 +19,7 @@ const PriceTileStyled = styled(SelectableTile)`
   ${(props) =>
     props.currentFavorite &&
     css`
-      ${greenBoxShadow}
+      ${BoxShadow}
       pointer-events: none;
     `}
 `;
