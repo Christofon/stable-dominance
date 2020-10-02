@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Tile } from "../Shared/Tile";
 import { AppContext } from "../App/AppProvider";
-import styled from "styled-components";
 
 export default function () {
   return (

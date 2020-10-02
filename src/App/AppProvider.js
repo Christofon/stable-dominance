@@ -47,7 +47,7 @@ export class AppProvider extends React.Component {
       var size = Math.pow(10, (i + 1) * 3);
       if (size <= number) {
         number = Math.round((number * decPlaces) / size) / decPlaces;
-        if (number == 1000 && i < abbrev.length - 1) {
+        if (number === 1000 && i < abbrev.length - 1) {
           number = 1;
           i++;
         }
