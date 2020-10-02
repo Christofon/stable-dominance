@@ -10,8 +10,6 @@ cc.setApiKey('2d4bc8914f719b5cd7e3969b416372090549ea712205ccb7cdeb20f200121075')
 
 export const AppContext = React.createContext();
 
-const MAX_FAVORITES= 10;
-
 const TIME_UNITS = 10;
 
 export class AppProvider extends React.Component {
@@ -27,8 +25,28 @@ export class AppProvider extends React.Component {
             setFilteredCoins: this.setFilteredCoins,
             setCurrentFavorite: this.setCurrentFavorite,
             changeChartSelect: this.changeChartSelect,
-            coinList: [],
+            calculateCombinedMarketCap: this.calculateCombinedMarketCap,
+            combinedMarketCap: 0,
+            numberFormat: this.numberFormat,
         }
+    }
+
+    numberFormat(number, decPlaces) {
+        decPlaces = Math.pow(10, decPlaces);
+        var abbrev = [ "k", "m", "b", "t" ];
+        for (var i=abbrev.length-1; 1>=0; i--) {
+            var size = Math.pow(10, (i+1)*3);
+            if (size <= number) {
+                number = Math.round(number*decPlaces/size)/decPlaces;
+                if ((number  == 1000) && (i < abbrev.length - 1)) {
+                    number = 1;
+                    i++;
+                }
+                number += abbrev[i];
+                break;
+            }
+        }
+        return number;
     }
 
     isInFavorites = key => _.includes(this.state.favorites, key)
@@ -55,6 +73,15 @@ export class AppProvider extends React.Component {
         this.setState({historical});
     }
 
+    calculateCombinedMarketCap = () => {
+        let mcap = 0;
+        this.state.coinList.forEach(function(sum){
+            mcap += sum.market_data.market_cap.usd;
+        })
+        this.setState({combinedMarketCap: mcap});
+        console.log(this.state.combinedMarketCap);
+    }
+
     historical = () => {
         let promises = [];
         for (let units = TIME_UNITS; units > 0; units--) {
@@ -67,9 +94,10 @@ export class AppProvider extends React.Component {
     }
 
 
-    fetchCoins =  async () =>  {
+    fetchCoins = async () =>  {
         let coins = await this.coins();
         this.setState({coinList: coins});
+        this.calculateCombinedMarketCap();
     }
 
     coins = async () => {

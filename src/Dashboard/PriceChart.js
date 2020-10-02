@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import highchartsConfig from './HighchartsConfig';
 import {Tile} from "../Shared/Tile";
 import {AppContext} from "../App/AppProvider";
