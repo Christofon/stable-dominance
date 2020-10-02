@@ -7,6 +7,7 @@ import { AppContext } from "../App/AppProvider";
 
 const TickerPrice = styled.div`
   ${fontSizeBig};
+  text-align: center;
 `;
 
 const PriceTileStyled = styled(SelectableTile)`

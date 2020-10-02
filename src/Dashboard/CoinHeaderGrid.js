@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export const CoinHeaderStyled = styled.div`
   margin-bottom: 5px;
+  text-align: center;
 `;
 
 export const CoinSymbol = styled.div`
