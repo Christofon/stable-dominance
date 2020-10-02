@@ -3,8 +3,7 @@ import styled from "styled-components";
 import { DeleteableTile } from "../Shared/Tile";
 
 export const CoinHeaderStyled = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  margin-bottom: 5px;
 `;
 
 export const CoinSymbol = styled.div`

@@ -36,7 +36,9 @@ export class AppProvider extends React.Component {
       changeChartSelect: this.changeChartSelect,
       calculateCombinedMarketCap: this.calculateCombinedMarketCap,
       combinedMarketCap: 0,
+      tetherDominance: 0,
       numberFormat: this.numberFormat,
+      calculateTetherDominance: this.calculateTetherDominance,
     };
   }
 
@@ -66,7 +68,6 @@ export class AppProvider extends React.Component {
   };
 
   //TODO implement historical fetch
-  //TODO refractor and sort codebase (prettier in every file)
 
   fetchHistorical = async () => {
     let results = await this.historical();
@@ -84,13 +85,19 @@ export class AppProvider extends React.Component {
     this.setState({ historical });
   };
 
+  calculateTetherDominance = () => {
+    const tetherMarketCap = this.state.coinList[0].market_data.market_cap.usd;
+    let dominance = tetherMarketCap * 100 / this.state.combinedMarketCap;
+    dominance = Math.round(dominance * 100) / 100;
+    this.setState({tetherDominance: dominance});
+  }
+
   calculateCombinedMarketCap = () => {
     let mcap = 0;
     this.state.coinList.forEach(function (sum) {
       mcap += sum.market_data.market_cap.usd;
     });
     this.setState({ combinedMarketCap: mcap });
-    console.log(this.state.combinedMarketCap);
   };
 
   historical = () => {
@@ -98,7 +105,6 @@ export class AppProvider extends React.Component {
     for (let units = TIME_UNITS; units > 0; units--) {
       promises.push(cg.coins.fetchMarketChart("tether", { days: 1 }));
     }
-    console.log(promises);
     return Promise.all(promises);
   };
 
@@ -106,6 +112,7 @@ export class AppProvider extends React.Component {
     let coins = await this.coins();
     this.setState({ coinList: coins });
     this.calculateCombinedMarketCap();
+    this.calculateTetherDominance();
   };
 
   coins = async () => {
