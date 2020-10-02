@@ -19,7 +19,7 @@ export class AppProvider extends React.Component {
         super(props);
         this.state = {
             page: "dashboard",
-            coins: ['tether', 'dai'],
+            coins: ['tether', 'usd-coin','dai','true-usd','paxos-standard','nusd'], //automatic sorting by highest MarketCap?
             timeInterval: '30',
             ...this.savedSettings(),
             setPage: this.setPage,
