@@ -6,81 +6,83 @@ import { CoinHeaderStyled } from "./CoinHeaderGrid";
 import { AppContext } from "../App/AppProvider";
 
 const JustifyRight = styled.div`
-    justify-self: right;
+  justify-self: right;
 `;
 
 const TickerPrice = styled.div`
-    ${fontSizeBig};
+  ${fontSizeBig};
 `;
 
 const ChangePct = styled.div`
-    color: green;
-    ${props =>
-        props.red &&
-        css`
-            color: red;
-        `}
+  color: green;
+  ${(props) =>
+    props.red &&
+    css`
+      color: red;
+    `}
 `;
 
 const PriceTileStyled = styled(SelectableTile)`
-    ${props =>
-        props.compact &&
-        css`
-            ${fontSize3}
-        `}
+  ${(props) =>
+    props.compact &&
+    css`
+      ${fontSize3}
+    `}
 
-    ${props =>
-        props.currentFavorite &&
-        css`
-            ${greenBoxShadow}
-            pointer-events: none;
-        `}
+  ${(props) =>
+    props.currentFavorite &&
+    css`
+      ${greenBoxShadow}
+      pointer-events: none;
+    `}
 `;
 
 function numberFormat(number, decPlaces) {
-    decPlaces = Math.pow(10, decPlaces);
-    var abbrev = [ "k", "m", "b", "t" ];
-    for (var i=abbrev.length-1; 1>=0; i--) {
-        var size = Math.pow(10, (i+1)*3);
-        if (size <= number) {
-            number = Math.round(number*decPlaces/size)/decPlaces;
-            if ((number  == 1000) && (i < abbrev.length - 1)) {
-                number = 1;
-                i++;
-            }
-            number += abbrev[i];
-            break;
-        }
+  decPlaces = Math.pow(10, decPlaces);
+  var abbrev = ["k", "m", "b", "t"];
+  for (var i = abbrev.length - 1; 1 >= 0; i--) {
+    var size = Math.pow(10, (i + 1) * 3);
+    if (size <= number) {
+      number = Math.round((number * decPlaces) / size) / decPlaces;
+      if (number == 1000 && i < abbrev.length - 1) {
+        number = 1;
+        i++;
+      }
+      number += abbrev[i];
+      break;
     }
-    return number;
+  }
+  return number;
 }
 
 function PriceTile({ sym, data, currentFavorite, setCurrentFavorite }) {
-    return (
-        <PriceTileStyled onClick={setCurrentFavorite} currentFavorite={currentFavorite}>
-            <CoinHeaderStyled>
-                <div> {sym} </div>
-            </CoinHeaderStyled>
-            <TickerPrice>{numberFormat(data.MKTCAP, 2)}</TickerPrice>
-        </PriceTileStyled>
-    );
+  return (
+    <PriceTileStyled
+      onClick={setCurrentFavorite}
+      currentFavorite={currentFavorite}
+    >
+      <CoinHeaderStyled>
+        <div> {sym} </div>
+      </CoinHeaderStyled>
+      <TickerPrice>{numberFormat(data.MKTCAP, 2)}</TickerPrice>
+    </PriceTileStyled>
+  );
 }
 
-export default function({ price }) {
-    let sym = Object.keys(price)[0];
-    let data = price[sym]["USD"];
+export default function ({ price }) {
+  let sym = Object.keys(price)[0];
+  let data = price[sym]["USD"];
 
-    return (
-        <AppContext.Consumer>
-        {({ currentFavorite, setCurrentFavorite }) =>
-            <PriceTile
-            sym={sym}
-            data={data}
-            currentFavorite={currentFavorite === sym}
-            setCurrentFavorite={() => setCurrentFavorite(sym)}
-            >
-            </PriceTile>
-        }
-        </AppContext.Consumer>
-    )
-        }
+  return (
+    <AppContext.Consumer>
+      {({ currentFavorite, setCurrentFavorite }) => (
+        <PriceTile
+          sym={sym}
+          data={data}
+          currentFavorite={currentFavorite === sym}
+          setCurrentFavorite={() => setCurrentFavorite(sym)}
+        ></PriceTile>
+      )}
+    </AppContext.Consumer>
+  );
+}

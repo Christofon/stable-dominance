@@ -1,28 +1,33 @@
 import React from "react";
 import styled from "styled-components";
-import { subtleBoxShadow, lightBlueBackground, greenBoxShadow, redBoxShadow } from "./Styles";
+import {
+  subtleBoxShadow,
+  lightBlueBackground,
+  greenBoxShadow,
+  redBoxShadow,
+} from "./Styles";
 
 export const Tile = styled.div`
-    ${subtleBoxShadow}
-    ${lightBlueBackground}
+  ${subtleBoxShadow}
+  ${lightBlueBackground}
     padding: 10px;
 `;
 
 export const SelectableTile = styled(Tile)`
-    &:hover {
-        cursor: pointer;
-        ${greenBoxShadow}
-    }
+  &:hover {
+    cursor: pointer;
+    ${greenBoxShadow}
+  }
 `;
 
 export const DeleteableTile = styled(SelectableTile)`
-    &:hover {
-        cursor: pointer;
-        ${redBoxShadow}
-    }
+  &:hover {
+    cursor: pointer;
+    ${redBoxShadow}
+  }
 `;
 
 export const DisabledTile = styled(Tile)`
-    pointer-events: none;
-    opacity: 0.4;
+  pointer-events: none;
+  opacity: 0.4;
 `;

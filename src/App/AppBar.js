@@ -3,18 +3,18 @@ import styled, { css } from "styled-components";
 import { AppContext } from "./AppProvider";
 
 const Bar = styled.div`
-    margin-bottom: 40px;
+  margin-bottom: 40px;
 `;
 
 const Logo = styled.div`
-    font-size: 1.5em;
-    text-align: center;
+  font-size: 1.5em;
+  text-align: center;
 `;
 
-export default function() {
-    return (
-        <Bar>
-            <Logo> Stable Dominance </Logo>
-        </Bar>
-    );
+export default function () {
+  return (
+    <Bar>
+      <Logo> Stable Dominance </Logo>
+    </Bar>
+  );
 }
