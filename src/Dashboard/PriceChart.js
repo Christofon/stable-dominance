@@ -14,7 +14,7 @@ export default function () {
       {({ historical, changeChartSelect }) => (
         <Tile>
           <ChartSelect
-            defaultValue="30"
+            defaultValue="max"
             onChange={(e) => changeChartSelect(e.target.value)}
           >
             <option value="1"> Day </option>

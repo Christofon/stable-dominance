@@ -27,7 +27,7 @@ export class AppProvider extends React.Component {
         "paxos-standard",
         "nusd",
       ], //automatic sorting by highest MarketCap?
-      timeInterval: "30",
+      timeInterval: "max",
       setPage: this.setPage,
       isInFavorites: this.isInFavorites,
       setFilteredCoins: this.setFilteredCoins,
@@ -95,7 +95,7 @@ export class AppProvider extends React.Component {
   };
   
   historical = () => {
-    let hist = cg.coins.fetchMarketChart(this.state.currentFavorite, {days: 30});
+    let hist = cg.coins.fetchMarketChart(this.state.currentFavorite, {days: this.state.timeInterval});
     return hist;
   };
 
