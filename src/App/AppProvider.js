@@ -39,6 +39,7 @@ export class AppProvider extends React.Component {
       tetherDominance: 0,
       numberFormat: this.numberFormat,
       calculateTetherDominance: this.calculateTetherDominance,
+      currentFavorite: "tether",
     };
   }
 
@@ -71,15 +72,11 @@ export class AppProvider extends React.Component {
 
   fetchHistorical = async () => {
     let results = await this.historical();
+    let his = results.data.market_caps;
     let historical = [
       {
         name: this.state.currentFavorite,
-        data: results.map((ticker, index) => [
-          moment()
-            .subtract({ [this.state.timeInterval]: TIME_UNITS - index })
-            .valueOf(),
-          ticker.USD,
-        ]),
+        data: his,
       },
     ];
     this.setState({ historical });
@@ -99,15 +96,11 @@ export class AppProvider extends React.Component {
     });
     this.setState({ combinedMarketCap: mcap });
   };
-
-  historical = () => {
-    let promises = [];
-    for (let units = TIME_UNITS; units > 0; units--) {
-      promises.push(cg.coins.fetchMarketChart("tether", { days: 1 }));
-    }
-    return Promise.all(promises);
+  
+  historical = async () => {
+    let his = await cg.coins.fetchMarketChart(this.state.currentFavorite, {days: 30});
+    return his;
   };
-
   fetchCoins = async () => {
     let coins = await this.coins();
     this.setState({ coinList: coins });
