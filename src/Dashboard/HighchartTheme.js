@@ -2,7 +2,7 @@ import { lightTheme } from "../Shared/Styles";
 
 export const Theme = {
   colors: [
-    "#61d936",
+    "#ED1D24",
     "#552ccb",
     "#1163c9",
     "#04A1EE",
