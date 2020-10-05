@@ -2,14 +2,15 @@ import React from "react";
 import _ from "lodash";
 import moment from "moment";
 
-const cc = require("cryptocompare");
-cc.setApiKey(
-  "2d4bc8914f719b5cd7e3969b416372090549ea712205ccb7cdeb20f200121075"
-);
+const CoinGecko = require("coingecko-api");
+const cg = new CoinGecko();
+
+//const cc = require("cryptocompare");
+//cc.setApiKey(
+//  "2d4bc8914f719b5cd7e3969b416372090549ea712205ccb7cdeb20f200121075"
+//);
 
 export const AppContext = React.createContext();
-
-const MAX_FAVORITES = 10;
 
 const TIME_UNITS = 10;
 
@@ -18,121 +19,104 @@ export class AppProvider extends React.Component {
     super(props);
     this.state = {
       page: "dashboard",
-      favorites: ["USDT", "USDC", "DAI", "ETH", "BTC"],
-      timeInterval: "months",
-      ...this.savedSettings(),
+      coins: [
+        "tether",
+        "usd-coin",
+        "dai",
+        "true-usd",
+        "paxos-standard",
+        "nusd",
+      ], //automatic sorting by highest MarketCap?
+      timeInterval: "max",
       setPage: this.setPage,
-      addCoin: this.addCoin,
-      removeCoin: this.removeCoin,
       isInFavorites: this.isInFavorites,
-      confirmFavorites: this.confirmFavorites,
       setFilteredCoins: this.setFilteredCoins,
       setCurrentFavorite: this.setCurrentFavorite,
       changeChartSelect: this.changeChartSelect,
-      coinList: {},
+      calculateCombinedMarketCap: this.calculateCombinedMarketCap,
+      combinedMarketCap: 0,
+      tetherDominance: 0,
+      numberFormat: this.numberFormat,
+      calculateTetherDominance: this.calculateTetherDominance,
+      currentFavorite: "tether",
     };
   }
 
-  addCoin = (key) => {
-    let favorites = [...this.state.favorites];
-    if (favorites.length < MAX_FAVORITES) {
-      favorites.push(key);
-      this.setState({ favorites });
+  numberFormat(number, decPlaces) {
+    decPlaces = Math.pow(10, decPlaces);
+    var abbrev = ["k", "m", "b", "t"];
+    for (var i = abbrev.length - 1; 1 >= 0; i--) {
+      var size = Math.pow(10, (i + 1) * 3);
+      if (size <= number) {
+        number = Math.round((number * decPlaces) / size) / decPlaces;
+        if (number === 1000 && i < abbrev.length - 1) {
+          number = 1;
+          i++;
+        }
+        number += abbrev[i];
+        break;
+      }
     }
-  };
-
-  removeCoin = (key) => {
-    let favorites = [...this.state.favorites];
-    this.setState({ favorites: _.pull(favorites, key) });
-  };
+    return number;
+  }
 
   isInFavorites = (key) => _.includes(this.state.favorites, key);
 
   componentDidMount = () => {
-    this.confirmFavorites();
     this.fetchCoins();
-    this.fetchPrices();
     this.fetchHistorical();
   };
 
   fetchHistorical = async () => {
     let results = await this.historical();
+    let hist = results.data.market_caps;
     let historical = [
       {
         name: this.state.currentFavorite,
-        data: results.map((ticker, index) => [
-          moment()
-            .subtract({ [this.state.timeInterval]: TIME_UNITS - index })
-            .valueOf(),
-          ticker.USD,
-        ]),
+        data: hist,
       },
     ];
     this.setState({ historical });
   };
 
+  calculateTetherDominance = () => {
+    const tetherMarketCap = this.state.coinList[0].market_data.market_cap.usd;
+    let dominance = tetherMarketCap * 100 / this.state.combinedMarketCap;
+    dominance = Math.round(dominance * 100) / 100;
+    this.setState({tetherDominance: dominance});
+  }
+
+  calculateCombinedMarketCap = () => {
+    let mcap = 0;
+    this.state.coinList.forEach(function (sum) {
+      mcap += sum.market_data.market_cap.usd;
+    });
+    this.setState({ combinedMarketCap: mcap });
+  };
+  
+  historical = () => {
+    let hist = cg.coins.fetchMarketChart(this.state.currentFavorite, {days: this.state.timeInterval});
+    return hist;
+  };
+
   fetchCoins = async () => {
-    let coinList = (await cc.coinList()).Data;
-    this.setState({ coinList });
+    let coins = await this.coins();
+    this.setState({ coinList: coins });
+    this.calculateCombinedMarketCap();
+    this.calculateTetherDominance();
   };
 
-  fetchPrices = async () => {
-    let prices = await this.prices();
-    prices = prices.filter((price) => Object.keys(price).length);
-    this.setState({ prices });
-  };
-
-  prices = async () => {
+  coins = async () => {
     let returnData = [];
-    for (let i = 0; i < this.state.favorites.length; i++) {
+    for (let i = 0; i < this.state.coins.length; i++) {
       try {
-        let priceData = await cc.priceFull(this.state.favorites[i], "USD");
-        returnData.push(priceData);
+        let coinData = await cg.coins.fetch(this.state.coins[i]);
+        returnData.push(coinData.data);
       } catch (e) {
-        console.warn("Fetch price error: ", e);
+        console.warn("Fetch coin error: ", e);
       }
     }
     return returnData;
-  };
-
-  historical = () => {
-    let promises = [];
-    for (let units = TIME_UNITS; units > 0; units--) {
-      promises.push(
-        cc.priceHistorical(
-          this.state.currentFavorite,
-          ["USD"],
-          moment()
-            .subtract({ [this.state.timeInterval]: units })
-            .toDate()
-        )
-      );
-    }
-    return Promise.all(promises);
-  };
-
-  confirmFavorites = () => {
-    let currentFavorite = this.state.favorites[0];
-    this.setState(
-      {
-        firstVisit: false,
-        page: "dashboard",
-        currentFavorite,
-        prices: null,
-        historical: null,
-      },
-      () => {
-        this.fetchPrices();
-        this.fetchHistorical();
-      }
-    );
-    localStorage.setItem(
-      "stableDominance",
-      JSON.stringify({
-        favorites: this.state.favorites,
-        currentFavorite,
-      })
-    );
   };
 
   setCurrentFavorite = (sym) => {
@@ -143,25 +127,7 @@ export class AppProvider extends React.Component {
       },
       this.fetchHistorical
     );
-    localStorage.setItem(
-      "stableDominance",
-      JSON.stringify({
-        ...JSON.parse(localStorage.getItem("stableDominance")),
-        currentFavorite: sym,
-      })
-    );
-  };
-
-  savedSettings() {
-    let stableDominanceData = JSON.parse(
-      localStorage.getItem("stableDominance")
-    );
-    if (!stableDominanceData) {
-      return { page: "settings", firstVisit: true };
     }
-    let { favorites, currentFavorite } = stableDominanceData;
-    return { favorites, currentFavorite };
-  }
 
   setPage = (page) => this.setState({ page });
 

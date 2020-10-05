@@ -2,7 +2,7 @@ import { lightTheme } from "../Shared/Styles";
 
 export const Theme = {
   colors: [
-    "#61d936",
+    "#ED1D24",
     "#552ccb",
     "#1163c9",
     "#04A1EE",
@@ -17,7 +17,7 @@ export const Theme = {
     borderWidth: 0,
     className: "dark-container",
     plotBackgroundColor: lightTheme ? "white" : "#061a44",
-    plotBorderColor: "#CCCCCC",
+    plotBorderColor: "grey",
     plotBorderWidth: 0,
   },
   title: {
@@ -33,8 +33,8 @@ export const Theme = {
     },
   },
   xAxis: {
-    gridLineColor: "#333333",
-    gridLineWidth: 0,
+    gridLineColor: "grey",
+    gridLineWidth: 1,
     labels: {
       style: {
         color: "#A0A0A0",
@@ -52,17 +52,17 @@ export const Theme = {
     },
   },
   yAxis: {
-    gridLineWidth: 0,
-    gridLineColor: "#333333",
+    gridLineWidth: 1,
+    gridLineColor: "grey",
     labels: {
       style: {
         color: "#A0A0A0",
       },
     },
     lineColor: "#A0A0A0",
-    minorTickInterval: null,
+    //minorTickInterval: null,
     tickColor: "#A0A0A0",
-    tickWidth: 1,
+    //tickWidth: 1,
     title: {
       style: {
         color: "#CCC",

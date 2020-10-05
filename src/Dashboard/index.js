@@ -1,7 +1,7 @@
 import React from "react";
 import Page from "../Shared/Page";
 import PriceGrid from "./PriceGrid";
-import CoinSpotlight from "./CoinSpotlight";
+import CoinSummary from "./CoinSummary";
 import styled from "styled-components";
 import PriceChart from "./PriceChart";
 
@@ -16,7 +16,7 @@ export default function () {
   return (
     <Page name="dashboard">
       <ChartGrid>
-        <CoinSpotlight />
+        <CoinSummary />
         <PriceChart />
       </ChartGrid>
       <PriceGrid />

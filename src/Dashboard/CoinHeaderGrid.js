@@ -1,34 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import { DeleteableTile } from "../Shared/Tile";
 
 export const CoinHeaderStyled = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  margin-bottom: 5px;
+  text-align: center;
 `;
 
 export const CoinSymbol = styled.div`
   justify-self: right;
 `;
 
-const DeleteIcon = styled.div`
-  justify-self: right;
-  display: none;
-  ${DeleteableTile}:hover & {
-    display: block;
-    color: red;
-  }
-`;
-
-export default function ({ name, symbol, topSection }) {
+export default function ({ name, symbol }) {
   return (
     <CoinHeaderStyled>
       <div> {name} </div>
-      {topSection ? (
-        <DeleteIcon> X </DeleteIcon>
-      ) : (
-        <CoinSymbol> {symbol} </CoinSymbol>
-      )}
+      <CoinSymbol> {symbol} </CoinSymbol>
     </CoinHeaderStyled>
   );
 }

@@ -1,20 +1,15 @@
 import React from "react";
-import styled, { css } from "styled-components";
-import { AppContext } from "./AppProvider";
+import styled from "styled-components";
+import Logo from "./Logo";
 
 const Bar = styled.div`
-  margin-bottom: 40px;
-`;
-
-const Logo = styled.div`
-  font-size: 1.5em;
-  text-align: center;
+  margin-bottom: 20px;
 `;
 
 export default function () {
   return (
     <Bar>
-      <Logo> Stable Dominance </Logo>
+      <Logo />
     </Bar>
   );
 }
