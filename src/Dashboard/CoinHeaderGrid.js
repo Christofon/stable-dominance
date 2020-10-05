@@ -10,7 +10,7 @@ export const CoinSymbol = styled.div`
   justify-self: right;
 `;
 
-export default function ({ name, symbol, topSection }) {
+export default function ({ name, symbol }) {
   return (
     <CoinHeaderStyled>
       <div> {name} </div>

@@ -46,7 +46,7 @@ function PriceTile({ sym, data, currentFavorite, setCurrentFavorite }) {
 }
 
 export default function ({ coin }) {
-  let sym = coin.name;
+  let sym = coin.id;
 
   return (
     <AppContext.Consumer>

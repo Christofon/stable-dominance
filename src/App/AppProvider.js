@@ -28,7 +28,6 @@ export class AppProvider extends React.Component {
         "nusd",
       ], //automatic sorting by highest MarketCap?
       timeInterval: "30",
-      ...this.savedSettings(),
       setPage: this.setPage,
       isInFavorites: this.isInFavorites,
       setFilteredCoins: this.setFilteredCoins,
@@ -68,15 +67,13 @@ export class AppProvider extends React.Component {
     this.fetchHistorical();
   };
 
-  //TODO implement historical fetch
-
   fetchHistorical = async () => {
     let results = await this.historical();
-    let his = results.data.market_caps;
+    let hist = results.data.market_caps;
     let historical = [
       {
         name: this.state.currentFavorite,
-        data: his,
+        data: hist,
       },
     ];
     this.setState({ historical });
@@ -97,10 +94,11 @@ export class AppProvider extends React.Component {
     this.setState({ combinedMarketCap: mcap });
   };
   
-  historical = async () => {
-    let his = await cg.coins.fetchMarketChart(this.state.currentFavorite, {days: 30});
-    return his;
+  historical = () => {
+    let hist = cg.coins.fetchMarketChart(this.state.currentFavorite, {days: 30});
+    return hist;
   };
+
   fetchCoins = async () => {
     let coins = await this.coins();
     this.setState({ coinList: coins });
@@ -129,25 +127,7 @@ export class AppProvider extends React.Component {
       },
       this.fetchHistorical
     );
-    localStorage.setItem(
-      "stableDominance",
-      JSON.stringify({
-        ...JSON.parse(localStorage.getItem("stableDominance")),
-        currentFavorite: sym,
-      })
-    );
-  };
-
-  savedSettings() {
-    let stableDominanceData = JSON.parse(
-      localStorage.getItem("stableDominance")
-    );
-    if (!stableDominanceData) {
-      return { page: "settings", firstVisit: true };
     }
-    let { favorites, currentFavorite } = stableDominanceData;
-    return { favorites, currentFavorite };
-  }
 
   setPage = (page) => this.setState({ page });
 
