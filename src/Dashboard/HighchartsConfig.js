@@ -8,15 +8,15 @@ export default function (historical) {
     },
     yAxis: {
       title: {
-        text: "Price",
+        text: "Market Cap",
       },
     },
     rangeSelector: {
       selected: 1,
     },
     title: {
-      text: "MarketCap",
-    },
+      text: "Market Cap", 
+    },//make variable title & y-axis
     series: historical,
   };
 }

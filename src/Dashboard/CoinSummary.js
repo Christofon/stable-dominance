@@ -26,7 +26,7 @@ export default function () {
       {({ combinedMarketCap, tetherDominance, numberFormat }) => (
         <Grid>
           <Tile>
-          <Heading>Combined MarketCap</Heading>
+          <Heading>Total Stable Coin Market Cap</Heading>
           <Ticker>{numberFormat(combinedMarketCap, 2)}</Ticker>
           </Tile>
           <Tile>
