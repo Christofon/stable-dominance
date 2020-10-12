@@ -10,7 +10,14 @@ const SocialButtons = styled.div`
 `;
 
 const Link = styled.a`
-  margin: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  text-decoration: none;
+  color: black;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export default function () {
