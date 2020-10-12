@@ -18,5 +18,8 @@ export default function (historical) {
       text: "Market Cap",
     },
     series: historical,
+    legend: {
+      enabled: false
+    },
   };
 }
