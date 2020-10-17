@@ -37,7 +37,7 @@ function PriceTile({ sym, data, currentFavorite, setCurrentFavorite }) {
             <div> {sym} </div>
           </CoinHeaderStyled>
           <TickerPrice>
-            {numberFormat(data.market_data.market_cap.usd, 2)}
+            {numberFormat(data.market_data.market_cap.usd, 2)} 
           </TickerPrice>
         </PriceTileStyled>
       )}

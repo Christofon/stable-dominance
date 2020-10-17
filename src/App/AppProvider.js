@@ -23,10 +23,14 @@ export class AppProvider extends React.Component {
         "tether",
         "usd-coin",
         "dai",
+        "binance-usd",
         "true-usd",
         "paxos-standard",
+        "husd",
         "nusd",
-      ], //automatic sorting by highest MarketCap?
+        "musd",
+        "usdk"
+      ], //TODO: automatic sorting by highest MarketCap & give name property ie. musd = mStable-USD
       timeInterval: "max",
       setPage: this.setPage,
       isInFavorites: this.isInFavorites,
