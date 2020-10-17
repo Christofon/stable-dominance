@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Bar = styled.div`
-  margin-top: 120px;
+  margin-top: 20px;
 `;
 
 const SocialButtons = styled.div`
