@@ -1,12 +1,7 @@
 import React from "react";
-import { AppContext } from "../App/AppProvider";
 
-export default function ({ name, children }) {
+export default function ({ children }) {
   return (
-    <AppContext.Consumer>
-      {({}) => {
-        return <div> {children} </div>;
-      }}
-    </AppContext.Consumer>
+        <div> {children} </div>
   );
 }
