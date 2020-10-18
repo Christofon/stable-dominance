@@ -6,13 +6,19 @@ import ReactHighcharts from "react-highcharts";
 import { Theme } from "./HighchartTheme";
 import ChartSelect from "./ChartSelect";
 import styled from "styled-components";
+import { device } from "../Shared/Styles";
 
 ReactHighcharts.Highcharts.setOptions(Theme);
 
 const StyledTile = styled(Tile)`
-  width: 1050px;
-  margin-left: 20px;
-`
+  heigth: 100px;
+  width: 350px;
+
+  @media ${device.mobileL} {
+    width: 1050px;
+    margin-left: 20px;
+  }
+`;
 
 export default function () {
   return (

@@ -7,46 +7,49 @@ import { Tile } from "../Shared/Tile";
 const Heading = styled.h3`
   ${fontSizeBig};
   text-align: center;
-`
+`;
 
 const SummaryTile = styled(Tile)`
   @media ${device.mobileL} {
-    width: 100%;
   }
-    width: 100%;
-`
+`;
 
 const Grid = styled.div`
   display: grid;
   grid-gap: 15px;
+align-content: center
+  grid-template-columns: repeat(1, 1fr 1fr);
 
-    grid-template-columns: repeat(1, 1fr 1fr);
-    
-    @media ${device.mobileL} {
-      grid-template-columns: repeat(1, 1fr);
-    }
+  @media ${device.mobileL} {
+    grid-template-columns: repeat(1, 1fr);
+  }
+`;
+
+const Container = styled.div`
   
 `
 
 const Ticker = styled.div`
   font-size: 4em;
   text-align: center;
-`
+`;
 
 export default function () {
   return (
     <AppContext.Consumer>
       {({ combinedMarketCap, tetherDominance, numberFormat }) => (
+        <Container>
         <Grid>
           <SummaryTile>
-          <Heading>Combined Market Cap</Heading>
-          <Ticker>{numberFormat(combinedMarketCap, 2)}</Ticker>
+            <Heading>Combined Market Cap</Heading>
+            <Ticker>{numberFormat(combinedMarketCap, 2)}</Ticker>
           </SummaryTile>
           <SummaryTile>
-          <Heading>Tether Dominance</Heading>
-          <Ticker>{tetherDominance}%</Ticker>
+            <Heading>Tether Dominance</Heading>
+            <Ticker>{tetherDominance}%</Ticker>
           </SummaryTile>
         </Grid>
+        </Container>
       )}
     </AppContext.Consumer>
   );
