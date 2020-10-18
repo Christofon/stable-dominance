@@ -11,7 +11,7 @@ const Heading = styled.h3`
 
 const SummaryTile = styled(Tile)`
   @media ${device.mobileL} {
-    width: 90%;
+    width: 100%;
   }
     width: 100%;
 `
