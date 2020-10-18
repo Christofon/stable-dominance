@@ -4,12 +4,16 @@ import PriceGrid from "./PriceGrid";
 import CoinSummary from "./CoinSummary";
 import styled from "styled-components";
 import PriceChart from "./PriceChart";
-
+import {device} from "../Shared/Styles";
 const ChartGrid = styled.div`
   display: grid;
   margin-top: 20px;
   grid-gap: 15px;
-  grid-template-columns: 1fr 3fr;
+
+  @media ${device.mobileL} {
+    grid-template-columns: 2fr 3fr;
+  }
+  grid-template-columns: 1fr;
 `;
 
 export default function () {

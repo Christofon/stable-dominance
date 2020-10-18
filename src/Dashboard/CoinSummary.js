@@ -1,18 +1,31 @@
 import React from "react";
 import { AppContext } from "../App/AppProvider";
-import {fontSizeBig} from "../Shared/Styles";
+import { fontSizeBig, device } from "../Shared/Styles";
 import styled from "styled-components";
-import {Tile} from "../Shared/Tile";
+import { Tile } from "../Shared/Tile";
 
 const Heading = styled.h3`
   ${fontSizeBig};
   text-align: center;
 `
 
+const SummaryTile = styled(Tile)`
+  @media ${device.mobileL} {
+    width: 90%;
+  }
+    width: 100%;
+`
+
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
   grid-gap: 15px;
+
+    grid-template-columns: repeat(1, 1fr 1fr);
+    
+    @media ${device.mobileL} {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  
 `
 
 const Ticker = styled.div`
@@ -25,14 +38,14 @@ export default function () {
     <AppContext.Consumer>
       {({ combinedMarketCap, tetherDominance, numberFormat }) => (
         <Grid>
-          <Tile>
+          <SummaryTile>
           <Heading>Combined Market Cap</Heading>
           <Ticker>{numberFormat(combinedMarketCap, 2)}</Ticker>
-          </Tile>
-          <Tile>
+          </SummaryTile>
+          <SummaryTile>
           <Heading>Tether Dominance</Heading>
           <Ticker>{tetherDominance}%</Ticker>
-          </Tile>
+          </SummaryTile>
         </Grid>
       )}
     </AppContext.Consumer>

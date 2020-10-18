@@ -10,6 +10,7 @@ import styled from "styled-components";
 ReactHighcharts.Highcharts.setOptions(Theme);
 
 const StyledTile = styled(Tile)`
+  width: 100%;
 `
 
 export default function () {

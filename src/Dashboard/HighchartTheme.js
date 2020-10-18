@@ -245,35 +245,4 @@ export const Theme = {
   dataLabelsColor: "#444",
   textColor: "#C0C0C0",
   maskColor: "rgba(255,255,255,0.3)",
-  
-    responsive: {
-    rules: [{
-      condition: {
-        maxWidth: 500
-      },
-      chartOptions: {
-        legend: {
-          align: 'center',
-          verticalAlign: 'bottom',
-          layout: 'horizontal'
-        },
-        yAxis: {
-          labels: {
-            align: 'left',
-            x: 0,
-            y: -5
-          },
-          title: {
-            text: null
-          }
-        },
-        subtitle: {
-          text: null
-        },
-        credits: {
-          enabled: false
-        }
-      }
-    }]
-  }
 };
