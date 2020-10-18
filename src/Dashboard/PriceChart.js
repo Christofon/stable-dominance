@@ -5,14 +5,18 @@ import { AppContext } from "../App/AppProvider";
 import ReactHighcharts from "react-highcharts";
 import { Theme } from "./HighchartTheme";
 import ChartSelect from "./ChartSelect";
+import styled from "styled-components";
 
 ReactHighcharts.Highcharts.setOptions(Theme);
+
+const StyledTile = styled(Tile)`
+`
 
 export default function () {
   return (
     <AppContext.Consumer>
       {({ historical, changeChartSelect }) => (
-        <Tile>
+        <StyledTile>
           <ChartSelect
             defaultValue="max"
             onChange={(e) => changeChartSelect(e.target.value)}
@@ -27,7 +31,7 @@ export default function () {
           ) : (
             <div> Loading historical data </div>
           )}
-        </Tile>
+        </StyledTile>
       )}
     </AppContext.Consumer>
   );
